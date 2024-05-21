@@ -14,7 +14,7 @@ jobs:
         env:
           DOCKER_REPO: 'testing-docker-local'
           IMAGE_NAME: 'carmit-testing:7'
-          JF_PROJECT: carmit-prj-1
+          JF_PROJECT: backoffice-proj
           JF_URL: https://${{ vars.JF_URL }}/
         outputs:
           image: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
