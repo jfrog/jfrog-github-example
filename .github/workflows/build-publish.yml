@@ -44,7 +44,7 @@ jobs:
               env:
                 JF_URL: https://${{ vars.JF_URL }}/
               with:
-                  oidc-provider-name: github-carmit-project-1
+                  oidc-provider-name: jfrog-github-oidc
 
             - name: check filesystem 1
               run: |      
