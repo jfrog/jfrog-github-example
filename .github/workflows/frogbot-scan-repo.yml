@@ -21,7 +21,7 @@ jobs:
         with:
           oidc-provider-name: github-carmit-project-1
         env:
-          ACTIONS_STEP_DEBUG: true
+          #ACTIONS_STEP_DEBUG: true
           # [Mandatory]
           # JFrog platform URL
           JF_URL: https://${{ vars.JF_URL }}/
