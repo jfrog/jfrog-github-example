@@ -12,8 +12,8 @@ jobs:
     build-publish-python:
         runs-on: ubuntu-latest
         env:
-          DOCKER_REPO: 'testing-docker-local'
-          IMAGE_NAME: 'carmit-testing:7'
+          DOCKER_REPO: 'docker-local'
+          IMAGE_NAME: 'github-example:1'
           JF_PROJECT: backoffice-proj
           JF_URL: https://${{ secrets.JF_URL }}/
         outputs:
