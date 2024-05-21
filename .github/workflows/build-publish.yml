@@ -1,0 +1,126 @@
+name: Build-publish-scan
+on:
+    push:
+        branches:
+
+permissions:
+  actions: read # for detecting the Github Actions environment.
+  id-token: write # for creating OIDC tokens for signing.
+  packages: write # for uploading attestations.
+  contents: read
+jobs:
+    build-publish-python:
+        runs-on: ubuntu-latest
+        env:
+          DOCKER_REPO: 'testing-docker-local'
+          IMAGE_NAME: 'carmit-testing:6'
+          JF_PROJECT: carmit-prj-1
+          JF_URL: https://${{ vars.JF_URL }}/
+        outputs:
+          image: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+          digest: ${{ steps.build.outputs.digest }}
+        steps:
+            # Setup Go
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                go-version: 1.22.x
+                cache: false
+
+            # Build the specific CLI branch
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                repository: "eyaldelarea/jfrog-cli"
+                ref: "job_summaries"
+
+            - name: Build current CLI
+              run: go build .
+
+            # Use the specific setup-cli branch
+            - uses: eyaldelarea/setup-jfrog-cli@cleanUpSummaries
+              name: Setup JFrog CLI
+              id: setup-cli
+              env:
+                JF_URL: https://${{ vars.JF_URL }}/
+              with:
+                  oidc-provider-name: github-carmit-project-1
+
+            - name: check filesystem 1
+              run: |      
+                mv  ./jfrog-cli /tmp/
+
+            - name: Checkout the repository
+              uses: actions/checkout@v4
+
+
+            - name: configure jfrog environment
+              run: |
+                /tmp/jfrog-cli pip-config --repo-resolve=python-virtual    
+
+            - name: configure environment
+              run: |                      
+                python3 -m pip install --upgrade pip setuptools wheel sigstore
+                wheel -h
+                pip show setuptools
+                echo $VIRTUAL_ENV
+
+            - name: build project
+              run: |                      
+                /tmp/jfrog-cli pip install -r requirements.txt  --module=jfrog-python-example
+                python setup.py sdist bdist_wheel
+                cd dist && echo "hashes=$(sha256sum * | base64 -w0)" >> $GITHUB_OUTPUT
+
+            - name: publish python package
+              run: |
+                /tmp/jfrog-cli rt u dist/ python-virtual/example-projects/ --module=jfrog-python-example
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Authenticate Docker
+              uses: docker/login-action@v3
+              with:
+                registry: ${{ vars.JF_URL }}
+                username: ${{ steps.setup-cli.outputs.oidc-user }}
+                password: ${{ steps.setup-cli.outputs.oidc-token }}
+
+
+            - name: Build Docker image
+              uses: docker/build-push-action@v5
+              id: build
+              with:
+                push: true
+                platforms: linux/amd64 #, linux/arm64
+                tags: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+
+
+            - name: docker scan
+              run: |  
+                 /tmp/jfrog-cli docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                 /tmp/jfrog-cli docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}                               
+
+            - name: add docker package to build
+              run: |  
+                 echo "${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}" > metadata.json
+                 /tmp/jfrog-cli rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
+
+            - name: publish build info
+              run: |
+                /tmp/jfrog-cli rt bce 
+                /tmp/jfrog-cli rt bp
+
+            - name: build scan
+              run: |            
+                /tmp/jfrog-cli build-scan --fail=false
+
+    provenance:
+      needs: [build-publish-python]
+      uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.10.0
+      with:
+        image:  ${{ needs.build-publish-python.outputs.image }}
+        digest: ${{ needs.build-publish-python.outputs.digest }}
+        private-repository: true
+      secrets:
+        registry-username: ${{ vars.JF_DOCKER_USER }}
+        registry-password: ${{ secrets.JF_DOCKER_TOKEN }}
