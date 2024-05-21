@@ -1,4 +1,4 @@
-name: Build-publish-scan
+name: build-publish-scan
 on:
     push:
         branches:
@@ -113,14 +113,3 @@ jobs:
             - name: build scan
               run: |            
                 /tmp/jfrog-cli build-scan --fail=false
-
-    provenance:
-      needs: [build-publish-python]
-      uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.10.0
-      with:
-        image:  ${{ needs.build-publish-python.outputs.image }}
-        digest: ${{ needs.build-publish-python.outputs.digest }}
-        private-repository: true
-      secrets:
-        registry-username: ${{ vars.JF_DOCKER_USER }}
-        registry-password: ${{ secrets.JF_DOCKER_TOKEN }}
