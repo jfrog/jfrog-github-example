@@ -85,7 +85,7 @@ jobs:
 
           # [Optional]
           # JFrog project. Learn more about it here: https://www.jfrog.com/confluence/display/JFROG/Projects
-          JF_PROJECT: backoffice-proj
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
 
           # [Optional, default: "TRUE"]
           # Fails the Frogbot task if any security issue is found.
