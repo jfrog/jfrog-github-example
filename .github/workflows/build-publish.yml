@@ -15,7 +15,7 @@ jobs:
           DOCKER_REPO: 'docker-local'
           IMAGE_NAME: 'github-jfrog-example:2'
           JF_PROJECT: backoffice-proj
-          JF_URL: https://${{ secrets.JF_URL }}/
+          JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Setup Go
             - name: Setup Go
@@ -39,7 +39,7 @@ jobs:
               name: Setup JFrog CLI
               id: setup-cli
               env:
-                JF_URL: https://${{ secrets.JF_URL }}/
+                JF_URL: https://${{ vars.JF_URL }}/
               with:
                   oidc-provider-name: jfrog-github-oidc
 
@@ -78,7 +78,7 @@ jobs:
             - name: Authenticate Docker
               uses: docker/login-action@v3
               with:
-                registry: ${{ secrets.JF_URL }}
+                registry: ${{ vars.JF_URL }}
                 username: ${{ steps.setup-cli.outputs.oidc-user }}
                 password: ${{ steps.setup-cli.outputs.oidc-token }}
 
@@ -89,17 +89,17 @@ jobs:
               with:
                 push: true
                 platforms: linux/amd64 #, linux/arm64
-                tags: ${{ secrets.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                tags: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
 
 
             - name: docker scan
               run: |  
-                 /tmp/jfrog-cli docker pull ${{ secrets.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
-                 /tmp/jfrog-cli docker scan ${{ secrets.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}                               
+                 /tmp/jfrog-cli docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                 /tmp/jfrog-cli docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}                               
 
             - name: add docker package to build
               run: |  
-                 echo "${{ secrets.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}" > metadata.json
+                 echo "${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}" > metadata.json
                  /tmp/jfrog-cli rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
 
             - name: publish build info
