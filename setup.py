@@ -10,5 +10,5 @@ setup(
     author_email='jfrog@jfrog.com',
     url='https://github.com/carmithersh/carmit-testing',
     packages=['pythonExample'],
-    install_requires=['PyYAML>3.11', 'nltk'],
+    install_requires=['PyYAML>3.11', 'nltk', 'transformers'],
 )
