@@ -16,9 +16,6 @@ jobs:
           IMAGE_NAME: 'github-jfrog-example:2'
           JF_PROJECT: backoffice-proj
           JF_URL: https://${{ secrets.JF_URL }}/
-        outputs:
-          image: ${{ secrets.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
-          digest: ${{ steps.build.outputs.digest }}
         steps:
             # Setup Go
             - name: Setup Go
