@@ -14,7 +14,7 @@ jobs:
         env:
           DOCKER_REPO: 'docker-local'
           IMAGE_NAME: 'github-jfrog-example:3'
-          JF_PROJECT: backoffice-proj
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Setup Go
