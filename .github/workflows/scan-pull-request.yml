@@ -95,7 +95,7 @@ jobs:
 
           # [Optional]
           # JFrog project. Learn more about it here: https://www.jfrog.com/confluence/display/JFROG/Projects
-          JF_PROJECT: carmit-prj-1
+          JF_PROJECT: ${{ vars.JF_PROJECT }}
 
           # [Optional, default: "FALSE"]
           # Displays all existing vulnerabilities, including the ones that were added by the pull request.
