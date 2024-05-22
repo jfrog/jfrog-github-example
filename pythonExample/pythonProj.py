@@ -17,3 +17,4 @@ def arc4_encrypt_password(key, password):
 
 # Now you can call printme function
 printme("Hello from JFROG");
+printme("by the way this script has a security issue, didwe catch it?") ;
