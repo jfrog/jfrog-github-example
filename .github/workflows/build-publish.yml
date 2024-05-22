@@ -12,8 +12,8 @@ jobs:
     build-publish-python:
         runs-on: ubuntu-latest
         env:
-          DOCKER_REPO: 'docker-local'
-          IMAGE_NAME: 'github-jfrog-example:3'
+          DOCKER_REPO: 'backoffice-docker-local'
+          IMAGE_NAME: 'backoffice-portal-application:1'
           JF_PROJECT: ${{ vars.JF_PROJECT }}
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
