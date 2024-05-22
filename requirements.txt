@@ -1,3 +1,7 @@
 PyYAML>3.11
 nltk
-redis == 4.6.0
+redis==4.6.0
+rapidfuzz==3.5.2
+packaging==23.2
+transformers==4.36.2
+numpy==1.25.2
