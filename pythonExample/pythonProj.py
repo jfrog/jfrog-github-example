@@ -9,7 +9,7 @@ def printme( str ):
 from project import db, app
 from Cryptodome.Cipher import ARC4
 import hashlib
-
+import transformers as trsf
 def arc4_encrypt_password(key, password):
     cipher = ARC4.new(key.encode('utf-8'))
     encrypted_password = cipher.encrypt(password.encode('utf-8'))
@@ -17,3 +17,4 @@ def arc4_encrypt_password(key, password):
 
 # Now you can call printme function
 printme("Hello from JFROG");
+trsf.BertTokenizer.from_pretrained('bert-base-uncased')
