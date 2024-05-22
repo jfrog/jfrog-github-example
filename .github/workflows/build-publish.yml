@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
           DOCKER_REPO: 'docker-local'
-          IMAGE_NAME: 'github-jfrog-example:2'
+          IMAGE_NAME: 'github-jfrog-example:3'
           JF_PROJECT: backoffice-proj
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
