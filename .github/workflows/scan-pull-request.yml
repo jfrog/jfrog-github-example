@@ -17,7 +17,7 @@ jobs:
         with:
           oidc-provider-name: jfrog-github-oidc
         env:
-          #JFROG_CLI_LOG_LEVEL: DEBUG
+          JFROG_CLI_LOG_LEVEL: DEBUG
           # [Mandatory]
           # JFrog platform URL
           JF_URL: https://${{ vars.JF_URL }}/
