@@ -17,23 +17,6 @@ jobs:
           JF_PROJECT: ${{ vars.JF_PROJECT }}
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
-            # Setup Go
-            - name: Setup Go
-              uses: actions/setup-go@v5
-              with:
-                go-version: 1.22.x
-                cache: false
-
-            # Build the specific CLI branch
-            - name: Checkout code
-              uses: actions/checkout@v4
-              with:
-                repository: "eyaldelarea/jfrog-cli"
-                ref: "job_summaries"
-
-            - name: Build current CLI
-              run: go build .
-
             # Use the specific setup-cli branch
             - uses: eyaldelarea/setup-jfrog-cli@cleanUpSummaries
               name: Setup JFrog CLI
@@ -43,17 +26,13 @@ jobs:
               with:
                   oidc-provider-name: jfrog-github-oidc
 
-            - name: check filesystem 1
-              run: |      
-                mv  ./jfrog-cli /tmp/
-
             - name: Checkout the repository
               uses: actions/checkout@v4
 
 
             - name: configure jfrog environment
               run: |
-                /tmp/jfrog-cli pip-config --repo-resolve=codeninjas-proj-python-virtual    
+                jf pip-config --repo-resolve=codeninjas-proj-python-virtual    
 
             - name: configure environment
               run: |                      
@@ -64,13 +43,13 @@ jobs:
 
             - name: build project
               run: |                      
-                /tmp/jfrog-cli pip install -r requirements.txt  --module=jfrog-python-example
+                jf pip install -r requirements.txt
                 python setup.py sdist bdist_wheel
                 cd dist && echo "hashes=$(sha256sum * | base64 -w0)" >> $GITHUB_OUTPUT
 
             - name: publish python package
               run: |
-                /tmp/jfrog-cli rt u dist/ codeninjas-proj-python-virtual/example-projects/ --module=jfrog-python-example
+                jf rt u dist/ codeninjas-proj-python-virtual/example-projects/
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
@@ -94,19 +73,19 @@ jobs:
 
             - name: docker scan
               run: |  
-                 /tmp/jfrog-cli docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
-                 /tmp/jfrog-cli docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}                               
+                 jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                 jf docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}                               
 
             - name: add docker package to build
               run: |  
                  echo "${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}" > metadata.json
-                 /tmp/jfrog-cli rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
+                 jf rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
 
             - name: publish build info
               run: |
-                /tmp/jfrog-cli rt bce 
-                /tmp/jfrog-cli rt bp
+                jf rt bce 
+                jf rt bp
 
             - name: build scan
               run: |            
-                /tmp/jfrog-cli build-scan --fail=false
+                jf build-scan --fail=false
