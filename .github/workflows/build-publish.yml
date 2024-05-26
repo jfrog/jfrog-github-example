@@ -88,7 +88,7 @@ jobs:
             - uses: actions/attest-build-provenance@v1
               id: attest
               with:
-                subject-name: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                subject-name: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/github-jfrog-example
                 subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
