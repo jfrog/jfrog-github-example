@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
           DOCKER_REPO: 'codeninjas-proj-docker-local'
-          IMAGE_NAME: 'my-very-cool-image:1'
+          IMAGE_NAME: 'my-very-cool-image:2'
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Use the specific setup-cli branch
