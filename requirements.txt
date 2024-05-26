@@ -1,4 +1,4 @@
 PyYAML>3.11
 nltk
 redis == 4.6.0
-transformers==4.17.0
+transformers==4.6.1
