@@ -81,21 +81,6 @@ jobs:
               run: |  
                  echo "${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}" > metadata.json
                  jf rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
-
-            - name: debug printouts
-              run: |  
-                 echo "${{ steps.build.outputs.digest }}"
-                 
-            - uses: actions/attest-build-provenance@v1
-              id: attest
-              with:
-                subject-name: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/github-jfrog-example
-                subject-digest: ${{ steps.build.outputs.digest }}
-                push-to-registry: true
-
-            - name: debug printouts 2
-              run: |  
-                 echo "bundle-path=${{ steps.attest.outputs.bundle-path }}"
                  
             - name: publish build info
               run: |
