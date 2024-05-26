@@ -14,7 +14,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
           DOCKER_REPO: 'codeninjas-proj-docker-local'
-          IMAGE_NAME: 'github-jfrog-example:4'
+          IMAGE_NAME: 'github-jfrog-example:1'
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Use the specific setup-cli branch
@@ -69,6 +69,7 @@ jobs:
                 push: true
                 platforms: linux/amd64 #, linux/arm64
                 tags: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                provenance: false
 
 
             - name: docker scan
