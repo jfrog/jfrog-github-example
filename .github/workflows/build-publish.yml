@@ -86,16 +86,21 @@ jobs:
                  echo "sha256:${{ steps.build.outputs.digest }}"
                  
             - uses: actions/attest-build-provenance@v1
+              id: attest
               with:
-                subject-path: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
                 subject-name: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
                 subject-digest: sha256:${{ steps.build.outputs.digest }}
                 push-to-registry: true
-                
+
+            - name: debug printouts 2
+              run: |  
+                 echo "bundle-path=${{ steps.attest.outputs.bundle-path }}"
+                 
             - name: publish build info
               run: |
-                jf rt bce 
-                jf rt bp
+                jf rt build-add-dependencies
+                jf rt build-collect-env 
+                jf rt build-publish
 
             - name: build scan
               run: |            
