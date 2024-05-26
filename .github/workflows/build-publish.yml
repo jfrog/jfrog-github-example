@@ -12,11 +12,10 @@ jobs:
     build-publish-python:
         runs-on: ubuntu-latest
         env:
-          DOCKER_REPO: 'backoffice-proj-backoffice-docker-local'
-          IMAGE_NAME: 'backoffice-portal-application:2'
+          DOCKER_REPO: 'codeninjas-proj-docker-local'
+          IMAGE_NAME: 'my-very-cool-image:1'
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
-  
             # Use the specific setup-cli branch
             - uses: eyaldelarea/setup-jfrog-cli@cleanUpSummaries
               name: Setup JFrog CLI
@@ -27,7 +26,6 @@ jobs:
               with:
                   oidc-provider-name: jfrog-github-oidc
 
-    
             - name: Checkout the repository
               uses: actions/checkout@v4
 
@@ -91,3 +89,4 @@ jobs:
             - name: build scan
               run: |            
                 jf build-scan --fail=false
+
