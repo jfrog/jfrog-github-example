@@ -9,6 +9,7 @@ def printme( str ):
 from project import db, app
 from Cryptodome.Cipher import ARC4
 import hashlib
+import transformers as tf
 
 def arc4_encrypt_password(key, password):
     cipher = ARC4.new(key.encode('utf-8'))
