@@ -8,12 +8,13 @@ permissions:
   id-token: write # for creating OIDC tokens for signing.
   packages: write # for uploading attestations.
   contents: read
+  attestations: write
 jobs:
     build-publish-python:
         runs-on: ubuntu-latest
         env:
           DOCKER_REPO: 'codeninjas-proj-docker-local'
-          IMAGE_NAME: 'github-jfrog-example:3'
+          IMAGE_NAME: 'github-jfrog-example:4'
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Use the specific setup-cli branch
@@ -80,6 +81,17 @@ jobs:
                  echo "${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}" > metadata.json
                  jf rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
 
+            - name: debug printouts
+              run: |  
+                 echo "sha256:${{ steps.build.outputs.digest }}"
+                 
+            - uses: actions/attest-build-provenance@v1
+              with:
+                subject-path: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                subject-name: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                subject-digest: sha256:${{ steps.build.outputs.digest }}
+                push-to-registry: true
+                
             - name: publish build info
               run: |
                 jf rt bce 
