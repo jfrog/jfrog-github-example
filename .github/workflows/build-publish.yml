@@ -14,7 +14,6 @@ jobs:
         env:
           DOCKER_REPO: 'codeninjas-proj-docker-local'
           IMAGE_NAME: 'github-jfrog-example:3'
-          JF_PROJECT: ${{ vars.JF_PROJECT }}
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Use the specific setup-cli branch
@@ -22,7 +21,7 @@ jobs:
               name: Setup JFrog CLI
               id: setup-cli
               env:
-                JF_URL: https://${{ vars.JF_URL }}/
+                JF_PROJECT: ${{ vars.JF_PROJECT }}
               with:
                   oidc-provider-name: jfrog-github-oidc
 
