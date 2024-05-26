@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
           DOCKER_REPO: 'backoffice-proj-backoffice-docker-local'
-          IMAGE_NAME: 'backoffice-portal-application:1'
+          IMAGE_NAME: 'backoffice-portal-application:2'
           JF_PROJECT: ${{ vars.JF_PROJECT }}
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
