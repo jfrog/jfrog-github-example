@@ -83,13 +83,13 @@ jobs:
 
             - name: debug printouts
               run: |  
-                 echo "sha256:${{ steps.build.outputs.digest }}"
+                 echo "${{ steps.build.outputs.digest }}"
                  
             - uses: actions/attest-build-provenance@v1
               id: attest
               with:
                 subject-name: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
-                subject-digest: sha256:${{ steps.build.outputs.digest }}
+                subject-digest: ${{ steps.build.outputs.digest }}
                 push-to-registry: true
 
             - name: debug printouts 2
