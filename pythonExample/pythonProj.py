@@ -17,4 +17,4 @@ def arc4_encrypt_password(key, password):
 
 # Now you can call printme function
 printme("Hello from JFROG");
-printme("This printout will trigger an entire investigation, how much time do you think it will take to locate when it was added?") ;
+printme("this is a log line that is monitored by the team and will cause alerts")
