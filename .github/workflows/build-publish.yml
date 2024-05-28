@@ -43,9 +43,9 @@ jobs:
                 echo $VIRTUAL_ENV
 
             - name: build project
-              run: |                      
-                jf pip install -r requirements.txt  --module=jfrog-python-example
-                jf curation-audit
+              run: |                     
+                jf curation-audit --requirements-file requirements.txt 
+                jf pip install -r requirements.txt  --module=jfrog-python-example                
                 python setup.py sdist bdist_wheel
                 cd dist && echo "hashes=$(sha256sum * | base64 -w0)" >> $GITHUB_OUTPUT
 
