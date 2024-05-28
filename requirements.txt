@@ -1,3 +1,4 @@
 PyYAML>3.11
 nltk
 redis == 4.6.0
+requests >=2.31.0
