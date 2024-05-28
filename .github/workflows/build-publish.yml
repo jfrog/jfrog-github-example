@@ -37,6 +37,7 @@ jobs:
 
             - name: configure environment
               run: |    
+                pip install --upgrade pip
                 pip -V
                 python3 -m pip install --upgrade pip setuptools wheel sigstore
                 wheel -h
