@@ -38,7 +38,9 @@ jobs:
             - name: configure environment
               run: |    
                 pip install --upgrade pip
-                echo "python3 --version"
+                echo "python --version"
+                python --version
+                echo "pip --version"
                 python3 --version
                 echo "pip --version"
                 python -m pip -V
