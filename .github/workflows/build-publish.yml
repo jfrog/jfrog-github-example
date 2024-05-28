@@ -36,7 +36,8 @@ jobs:
                 jf pip-config --repo-resolve=codeninjas-proj-python-virtual   
 
             - name: configure environment
-              run: |                      
+              run: |    
+                pip -V
                 python3 -m pip install --upgrade pip setuptools wheel sigstore
                 wheel -h
                 pip show setuptools
