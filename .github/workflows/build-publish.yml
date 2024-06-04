@@ -17,7 +17,7 @@ jobs:
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Use the specific setup-cli branch
-            - uses: eyaldelarea/setup-jfrog-cli@cleanUpSummaries
+            - uses: jfrog/setup-jfrog-cli@v4
               name: Setup JFrog CLI
               id: setup-cli
               env:
@@ -37,13 +37,7 @@ jobs:
 
             - name: configure environment
               run: |    
-                pip install --upgrade pip
-                echo "python --version"
-                python --version
-                echo "pip --version"
-                python3 --version
-                echo "pip --version"
-                python -m pip -V
+                pip install --upgrade pip     
                 python3 -m pip install --upgrade pip setuptools wheel sigstore
                 wheel -h
                 pip show setuptools
