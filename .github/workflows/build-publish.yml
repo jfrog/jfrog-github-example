@@ -17,8 +17,8 @@ jobs:
           JF_URL: https://${{ vars.JF_URL }}/
         steps:
             # Use the specific setup-cli branch
-            - uses: jfrog/setup-jfrog-cli@v4
-              name: Setup JFrog CLI
+            - name: Setup JFrog CLI
+              uses: jfrog/setup-jfrog-cli@v4
               id: setup-cli
               env:
                 JF_URL: https://${{ vars.JF_URL }}/
