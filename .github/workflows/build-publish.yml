@@ -75,7 +75,7 @@ jobs:
 
             - name: docker build
               run: |  
-                jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} --platform 'linux/amd64, linux/arm64'  --push .
+                jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} --platform 'linux/amd64,linux/arm64'  --push .
 
             - name: docker scan
               run: |  
