@@ -69,6 +69,12 @@ jobs:
                 username: ${{ steps.setup-cli.outputs.oidc-user }}
                 password: ${{ steps.setup-cli.outputs.oidc-token }}
 
+            - name: set docker experimental
+              run: |      
+                export DOCKER_CLI_EXPERIMENTAL=enabled
+                bash -c 'echo "{ "cgroup-parent": "/actions_job","experimental":true}" > /etc/docker/daemon.json'
+                systemctl restart docker.service
+
             - name: Checkout containerd
               uses: actions/checkout@v4
               with:
