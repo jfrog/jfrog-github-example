@@ -85,6 +85,10 @@ jobs:
                 ref: ${{ github.ref }}
                 path: src/github.com/containerd/containerd
 
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3                 
+
+
             - name: Setup buildx instance
               uses: docker/setup-buildx-action@v3
               with:
