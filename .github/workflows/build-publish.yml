@@ -15,6 +15,7 @@ jobs:
           DOCKER_REPO: 'codeninjas-proj-docker-local'
           IMAGE_NAME: 'my-very-cool-image:${{ github.run_number }}'
           JF_URL: https://${{ vars.JF_URL }}/
+          DOCKER_CLI_EXPERIMENTAL: enabled
         steps:
             # Use the specific setup-cli branch
             - name: Setup JFrog CLI
