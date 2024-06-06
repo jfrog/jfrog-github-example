@@ -29,6 +29,12 @@ jobs:
             - name: Checkout the repository
               uses: actions/checkout@v4
 
+            - name: Cache Primes
+              id: cache-primes
+              uses: actions/cache@v4
+              with:
+                path: /usr/lib/python3/dist-packages
+                key: python_requirements1
 
             - name: configure jfrog environment
               run: |
@@ -63,15 +69,20 @@ jobs:
                 username: ${{ steps.setup-cli.outputs.oidc-user }}
                 password: ${{ steps.setup-cli.outputs.oidc-token }}
 
+            - name: Checkout containerd
+              uses: actions/checkout@v4
+              with:
+              # Intentionally use github.repository instead of containerd/containerd to
+              # make this action runnable on forks.
+              # See https://github.com/containerd/containerd/issues/5098 for the context.
+                repository: ${{ github.repository }}
+                ref: ${{ github.ref }}
+                path: src/github.com/containerd/containerd
 
-            #- name: Build Docker image
-            #  uses: docker/build-push-action@v5
-            #  id: build
-            #  with:
-            #    push: true
-            #    platforms: linux/amd64, linux/arm64
-            #    tags: ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
-            #    provenance: false
+            - name: Setup buildx instance
+              uses: docker/setup-buildx-action@v3
+              with:
+                use: true
 
             - name: docker build
               run: |  
