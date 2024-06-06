@@ -91,8 +91,8 @@ jobs:
                 jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}-arm64 --platform  linux/arm64 --load .
                 docker images
                 jf docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}-arm64
-                
-                docker manifest create ${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}-amd64 ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}-arm64                
+                echo "docker images scanned, now lets push a fat manifest and the images"
+                docker manifest create ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}-amd64 ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}-arm64                
                 docker manifest push ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
                 #docker image save -o myimage.tar localhost:5000/myimage:latest
                 
