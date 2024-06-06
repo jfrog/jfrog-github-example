@@ -83,12 +83,18 @@ jobs:
               run: |  
                 docker buildx ls
                 jf docker --version
-                jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} --platform linux/amd64,linux/arm64   --push .
+                jf docker build --tag ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} --platform linux/amd64,linux/arm64  .
                 
             - name: docker scan
               run: |  
-                 jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
-                 jf docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}                   
+                 #jf docker pull ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                 jf docker scan ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }} 
+                 
+            - name: docker push
+              run: |  
+                 jf docker push ${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+                 
+                 
 
             #- name: add docker package to build
             #  run: |  
