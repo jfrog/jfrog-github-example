@@ -98,7 +98,7 @@ jobs:
                  echo "----------------"
                  cat metadata.json
                  echo "----------------"
-                 digest = $(cat metadata.json | jq '.["containerimage.digest"]')
+                 digest=$(cat metadata.json | jq '.["containerimage.digest"]')
                  echo "digest=$digest"
                  echo "${{ vars.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}@$digest" > metadata.json
                  jf rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json 
