@@ -30,7 +30,7 @@ jobs:
 
       - uses: jfrog/frogbot@v2
         with:
-          oidc-provider-name: jfrog-github-oidc
+          oidc-provider-name: github-oidc-integration
         env:
           # [Mandatory if the two conditions below are met]
           # 1. The project uses npm, yarn 2, NuGet or .NET to download its dependencies
